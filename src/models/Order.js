@@ -6,3 +6,7 @@ const OrderSchema = new mongoose.Schema({
         required: true
     }
 });
+
+const Order = mongoose.model('Order', OrderSchema);
+
+module.exports = Order;
