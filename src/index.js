@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const mongoose = require('mongoose');
+const requireDir = require('require-dir');
 
 const app = express();
 
@@ -11,6 +12,7 @@ const opts = { useNewUrlParser: true, useCreateIndex: true, useFindAndModify: fa
 
 mongoose.connect(url, opts);
 mongoose.Promise = global.Promise;
+requireDir('./models');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
