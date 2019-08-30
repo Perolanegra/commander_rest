@@ -1,34 +1,20 @@
 const mongoose = require('mongoose');
 
 const OrderSchema = new mongoose.Schema({
-    place_name: {
-        type: String,
-        required: true
-    },
-    id_items: {
+    items: { // id_produto, qtd_produto
         type: Array,
         required: true
     },
-    status: {
+    id_user: {
         type: String,
-        enum: ["open", "confirmed", "done"],
-        default: "open"
-    },
-    id_table: {
-        type: String,
-        required: true,
-        unique: true
-    },
-    price: {
-        type: Number,
-        default: 0
+        required: true
     },
     created_at: {
         type: Date,
         default: Date.now
     },
     deleted_at: {
-        type: Date,
+        type: Date, 
         default: null
     },
     updated_at: {

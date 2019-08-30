@@ -1,25 +1,25 @@
 const mongoose = require('mongoose');
 
-const TableSchema = new mongoose.Schema({
-    id_place: {
+const ProductSchema = new mongoose.Schema({
+    name: {
         type: String,
         required: true
     },
-    number: {
+    price: {
         type: Number,
         required: true
     },
     description: {
         type: String,
-        maxlength: 300,
-        default: null
+        default: null,
+        maxlength: 450
     },
-    name: {
+    img: {
         type: String,
         default: null
-    },
+    }
 });
 
-const Table = mongoose.model('Table', TableSchema);
+const Product = mongoose.model('Product', ProductSchema);
 
-module.exports = Table;
+module.exports = Product;
