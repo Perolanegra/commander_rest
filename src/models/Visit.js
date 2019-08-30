@@ -16,6 +16,14 @@ const VisitSchema = new mongoose.Schema({
     created_at: {
         type: Date,
         default: Date.now
+    },
+    deleted_at: {
+        type: Date,
+        default: null
+    },
+    updated_at: {
+        type: Date,
+        default: null
     }
 });
 
