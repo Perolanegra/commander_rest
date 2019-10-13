@@ -19,7 +19,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cors());
 
 app.get('/', (req, res) => {
-    res.send('Servidor online');
+    res.send('{ "API-REST": "1.0.0-SNAPSHOT with express is online!" }');
 });
 
 // require('./controllers/ctrl')(app);
