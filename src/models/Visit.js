@@ -9,7 +9,7 @@ const VisitSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    id_place: {
+    id_establishment: {
         type: String,
         required: true
     },
@@ -18,6 +18,10 @@ const VisitSchema = new mongoose.Schema({
         default: Date.now
     },
     deleted_at: {
+        type: Date,
+        default: null
+    },
+    finished_at: {
         type: Date,
         default: null
     },

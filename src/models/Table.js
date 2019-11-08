@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const TableSchema = new mongoose.Schema({
-    id_place: {
+    id_establishment: {
         type: String,
         required: true
     },
@@ -18,6 +18,10 @@ const TableSchema = new mongoose.Schema({
         type: String,
         default: null
     },
+    deleted_at: {
+        type: Date,
+        default: null
+    }
 });
 
 const Table = mongoose.model('Table', TableSchema);
