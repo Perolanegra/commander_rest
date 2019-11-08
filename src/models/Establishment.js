@@ -27,13 +27,11 @@ const EstablishmentSchema = new mongoose.Schema({
     },
     rating: {
         type: String,
-        required: true,
-        default: null
+        required: true
     },
     img: {
         type: String,
-        required: true,
-        default: null
+        required: true
     },
     feedback: {
         type: String,
@@ -41,13 +39,11 @@ const EstablishmentSchema = new mongoose.Schema({
     },
     schedule: {
         type: String,
-        required: true,
-        default: null
+        required: true
     },
     address: {
         type: String,
-        required: true,
-        default: null
+        required: true
     },
     created_at: {
         type: Date,

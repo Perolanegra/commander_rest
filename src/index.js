@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 const requireDir = require('require-dir');
 
 const app = express();
+app.use(express.json());
 
 // caso tenha usuario e senha em localhost definir user@password
 const url = 'mongodb://localhost:27017/node_rest';
@@ -14,13 +15,14 @@ mongoose.connect(url, opts);
 mongoose.Promise = global.Promise;
 requireDir('./models');
 
+app.use("/api", require("./routes"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cors());
 
-app.get('/', (req, res) => {
-    res.send('{ "API-REST": "1.0.0-SNAPSHOT with express is online!" }');
-});
+// app.get('/', (req, res) => {
+//     res.send('{ "API-REST": "1.0.0-SNAPSHOT with express is online!" }');
+// });
 
 // require('./controllers/ctrl')(app);
 app.listen(3500, _ => console.log('listening to 3500'));
