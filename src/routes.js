@@ -4,6 +4,8 @@ const routes = express.Router();
 const ProductCtrl = require('./controllers/ProductCtrl');
 const VisitCtrl = require('./controllers/VisitCtrl');
 const TableCtrl = require('./controllers/TableCtrl');
+const OrderCtrl = require('./controllers/OrderCtrl');
+const EstablishmentCtrl = require('./controllers/EstablishmentCtrl');
 /** Endpoints **/
 
 /** Endpoints Produtos */
@@ -22,5 +24,12 @@ routes.post('/table/store', TableCtrl.store);
 routes.delete('/table/delete/:id', TableCtrl.delete);
 /** Fim Mesa */
 
+/** Endpoints Pedido */
+routes.post('/order/store', OrderCtrl.store);
+/** Fim Pedido */
+
+/** Endpoints Estabelecimento */
+routes.post('/establishment/store', EstablishmentCtrl.store);
+/** Fim Estabelecimento */
 
 module.exports = routes;
