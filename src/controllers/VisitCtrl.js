@@ -18,7 +18,7 @@ module.exports = {
 
     async checkActiveVisitByTableId(req, res) {
         try {
-            let visit = await Visit.find({ id_table: req.params.id_table, finished_at: null });
+            let visit = await Visit.find({ id_table: req.query.id_table, finished_at: null });
             
             if(!visit) {
                 const { id_establishment } = await Table.find({ id_table: req.query.id_table, deleted_at: null });

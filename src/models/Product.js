@@ -29,6 +29,18 @@ const ProductSchema = new mongoose.Schema({
     qtd: {
         type: Number,
         default: 0
+    },
+    created_at: {
+        type: Date,
+        default: Date.now
+    },
+    deleted_at: {
+        type: Date,
+        default: null
+    },
+    updated_at: {
+        type: Date,
+        default: null
     }
 });
 

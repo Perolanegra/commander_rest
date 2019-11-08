@@ -8,6 +8,7 @@ const TableCtrl = require('./controllers/TableCtrl');
 
 /** Endpoints Produtos */
 routes.get('/products', ProductCtrl.index);
+routes.get('/products/getByEstablishmentId', ProductCtrl.getByEstablishmentId);
 /** Fim Produtos */
 
 /** Endpoints Instância Visita */

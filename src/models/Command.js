@@ -7,7 +7,7 @@ const CommandSchema = new mongoose.Schema({
     },
     status: {
         type: String,
-        enum: ["open", "closed"],
+        enum: ["paid", "open"],
         default: "open"
     },
     id_visit: {
@@ -15,7 +15,7 @@ const CommandSchema = new mongoose.Schema({
         required: true,
         unique: true
     },
-    created_at: {
+    created_at: { // parametro pra saber se a comanda está ativa.
         type: Date,
         default: Date.now
     },
