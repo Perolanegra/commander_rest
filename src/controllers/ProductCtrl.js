@@ -5,10 +5,23 @@ const Product = mongoose.model('Product');
 module.exports = {
 
     async getByEstablishmentId(req, res) { // requisição do cardápio
+        console.log('colé de pan: ', req.query);
+        
         try {
             const products = await Product.find({ id_establishment: req.query.id_establishment, deleted_at: null });
 
-            res.json(products);
+            return res.json(products);
+            
+        } catch (e) {
+            return res.status(400).send({ err: { message: 'Operação Indisponível no momento.', e }});
+        }
+    },
+
+    async getAll(req, res) {
+        try {
+            const products = await Product.find();
+
+            return res.send(products);
             
         } catch (e) {
             return res.status(400).send({ err: { message: 'Operação Indisponível no momento.', e }});

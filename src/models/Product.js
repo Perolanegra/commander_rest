@@ -16,7 +16,7 @@ const ProductSchema = new mongoose.Schema({
     },
     img: {
         type: String,
-        default: null
+        required: true
     },
     id_establishment: {
         type: String,

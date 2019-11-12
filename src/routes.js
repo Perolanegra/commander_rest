@@ -9,8 +9,9 @@ const EstablishmentCtrl = require('./controllers/EstablishmentCtrl');
 /** Endpoints **/
 
 /** Endpoints Produtos */
-routes.get('/product/getByEstablishmentId', ProductCtrl.getByEstablishmentId);
-routes.get('/product/store', ProductCtrl.store);
+routes.get('/products/getByEstablishmentId', ProductCtrl.getByEstablishmentId);
+routes.get('/products', ProductCtrl.getAll);
+routes.post('/products/store', ProductCtrl.store);
 /** Fim Produtos */
 
 /** Endpoints Instância Visita */
@@ -19,17 +20,17 @@ routes.get('/visit/checkActiveVisitByTableId', VisitCtrl.checkActiveVisitByTable
 /** Fim Instância Visita */
 
 /** Endpoints Mesa */
-routes.post('/table/store', TableCtrl.store);
-routes.delete('/table/delete/:id', TableCtrl.delete);
+routes.post('/tables/store', TableCtrl.store);
+routes.delete('/tables/delete/:id', TableCtrl.delete);
 /** Fim Mesa */
 
 /** Endpoints Pedido */
-routes.post('/order/store', OrderCtrl.store);
+routes.post('/orders/store', OrderCtrl.store);
 /** Fim Pedido */
 
 /** Endpoints Estabelecimento */
-routes.get('/establishment', EstablishmentCtrl.getAll);
-routes.post('/establishment/store', EstablishmentCtrl.store);
+routes.get('/establishments', EstablishmentCtrl.getAll);
+routes.post('/establishments/store', EstablishmentCtrl.store);
 /** Fim Estabelecimento */
 
 module.exports = routes;

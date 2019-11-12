@@ -35,7 +35,7 @@ module.exports = {
         
         try {
             const establishments = await Establishment.find();
-            return res.json(establishments);
+            return res.send(establishments);
             
         } catch (e) {
             return res.status(400).send({ err: { message: 'Não foi possível retornar a lista de Estabelecimentos.', e }  });
