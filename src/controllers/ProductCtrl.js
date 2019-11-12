@@ -5,8 +5,6 @@ const Product = mongoose.model('Product');
 module.exports = {
 
     async getByEstablishmentId(req, res) { // requisição do cardápio
-        console.log('colé de pan: ', req.query);
-        
         try {
             const products = await Product.find({ id_establishment: req.query.id_establishment, deleted_at: null });
 
