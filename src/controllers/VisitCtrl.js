@@ -16,15 +16,15 @@ module.exports = {
         
     },
 
-    async checkActiveVisitByTableId(req, res) {
+    async getByTableId(req, res) {
         try {
             let visit = await Visit.find({ id_table: req.query.id_table, finished_at: null });
             
             if(!visit) {
                 const { id_establishment } = await Table.find({ id_table: req.query.id_table, deleted_at: null });
                 const new_visit = {
-                    id_users: [req.params.id_user],
-                    id_table: req.params.id_table,
+                    id_users: [req.query.id_user],
+                    id_table: req.query.id_table,
                     id_establishment: id_establishment
                 };
 

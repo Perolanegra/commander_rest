@@ -16,7 +16,7 @@ routes.post('/products/store', ProductCtrl.store);
 
 /** Endpoints Instância Visita */
 routes.get('/visit/getByUserId', VisitCtrl.getByUserId);
-routes.get('/visit/checkActiveVisitByTableId', VisitCtrl.checkActiveVisitByTableId);
+routes.get('/visit/getByTableId', VisitCtrl.getByTableId);
 /** Fim Instância Visita */
 
 /** Endpoints Mesa */
