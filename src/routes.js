@@ -37,7 +37,7 @@ routes.post('/establishments/store', EstablishmentCtrl.store);
 
 /** Endpoints Estabelecimento */
 routes.get('/user', UserCtrl.getAll);
-routes.get('/user/authenticate', UserCtrl.getAgetByIdll);
+routes.get('/user/authenticate', UserCtrl.getById);
 routes.post('/user/register', UserCtrl.store);
 /** Fim Estabelecimento */
 
