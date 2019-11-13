@@ -20,8 +20,8 @@ routes.get('/visit/getByTableId', VisitCtrl.getByTableId);
 /** Fim Instância Visita */
 
 /** Endpoints Mesa */
-routes.post('/tables/store', TableCtrl.store);
-routes.delete('/tables/delete/:id', TableCtrl.delete);
+routes.post('/table/store', TableCtrl.store);
+routes.delete('/table/delete/:id', TableCtrl.delete);
 /** Fim Mesa */
 
 /** Endpoints Pedido */

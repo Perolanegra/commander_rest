@@ -7,6 +7,19 @@ module.exports = {
     async store(req, res) {
         const postData = req.body;
         try {
+
+            await Table.find(postData, (e, resp) => {
+                if(e) {
+                    return res.status(400).send({ err: { message: 'Operação Indisponível no momento.', e } });
+                }
+                
+                hasData = resp.length ? true : false;
+            });
+    
+            if(hasData) {
+                return res.status(409).send({ err: { message: 'Mesa já existente.' } });
+            }
+
             const table = await Table.create(postData);
     
             return res.send(table);

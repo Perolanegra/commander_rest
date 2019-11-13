@@ -14,11 +14,15 @@ const TableSchema = new mongoose.Schema({
         maxlength: 300,
         default: null
     },
-    name: {
-        type: String,
+    deleted_at: {
+        type: Date,
         default: null
     },
-    deleted_at: {
+    created_at: {
+        type: Date,
+        default: Date.now
+    },
+    updated_at: {
         type: Date,
         default: null
     }
