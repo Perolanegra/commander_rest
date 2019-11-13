@@ -30,8 +30,11 @@ module.exports = {
 
                 visit = this.store(new_visit);
             }
-
-            // update visit with the id_user that is going to be part of the table now.
+            else {
+                // update visit with the id_user that is going to be part of the table now.
+                const { _id } = visit;
+                visit = await Visit.update({ _id: _id }, { $push: { id_users: id_user } });
+            }
     
             return res.json(visit);
             
