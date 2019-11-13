@@ -30,6 +30,8 @@ module.exports = {
 
                 visit = this.store(new_visit);
             }
+
+            // update visit with the id_user that is going to be part of the table now.
     
             return res.json(visit);
             
