@@ -25,7 +25,7 @@ module.exports = {
             return res.send(table);
             
         } catch (e) {
-            return res.status(400).send({ err: { message: 'Operação Indisponível no momento.', e }  });
+            return res.status(400).send({ err: { message: 'Erro ao inserir registro de mesa.', e }  });
         }
     },
 
@@ -36,7 +36,18 @@ module.exports = {
             return res.send(deleted);
     
         } catch (e) {
-            return res.status(400).send({ err: { message: 'Operação Indisponível no momento', e }});
+            return res.status(400).send({ err: { message: 'Erro ao deletar registro de mesa.', e }});
+        }
+    },
+
+    async getAll(req, res) {
+        try {
+            const tables = await Table.find();
+
+            return res.json(tables);
+            
+        } catch (e) {
+            return res.status(400).send({ err: { message: 'Erro ao obter todas as mesas.', e }});
         }
     }
 
