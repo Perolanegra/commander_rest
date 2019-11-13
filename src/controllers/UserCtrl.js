@@ -49,5 +49,16 @@ module.exports = {
         } catch (e) {
             return res.status(400).send({ err: { message: 'Erro ao obter todos os usuários.', e }});
         }
+    },
+
+    async getById(req, res) { // requisição do usuário corrente.
+        try {
+            const user = await User.find({ email: req.query.email, password: req.query.password, deleted_at: null });
+
+            return res.json(user);
+            
+        } catch (e) {
+            return res.status(400).send({ err: { message: 'Erro ao obter usuário.', e }});
+        }
     }
 }

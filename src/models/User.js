@@ -1,6 +1,22 @@
 const mongoose = require('mongoose');
 
 const UserSchema = new mongoose.Schema({
+    name: {
+        type: String,
+        required: true
+    },
+    statusMsg: {
+        type: String,
+        default: null
+    },
+    phone: {
+        type: String,
+        default: null
+    },
+    birthDate: {
+        type: Date,
+        default: null
+    },
     email: {
         type: String,
         required: true
@@ -13,6 +29,10 @@ const UserSchema = new mongoose.Schema({
         type: String,
         enum: ["1", "0"],
         default: "0"
+    },
+    img: {
+        type: String,
+        default: null
     },
     created_at: {
         type: Date,
