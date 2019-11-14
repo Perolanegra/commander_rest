@@ -6,6 +6,9 @@ module.exports = {
 
     async store(req, res) {
         const postData = req.body;
+        let hasData;
+        let email = null;
+        
         try {
 
             await User.find(postData, (e, resp) => {
@@ -14,10 +17,14 @@ module.exports = {
                 }
                 
                 hasData = resp.length ? true : false;
+                email = resp.email;
             });
     
             if(hasData) {
                 return res.status(409).send({ err: { message: 'Usuário já existente.' } });
+            }
+            else if(email) {
+                return res.status(409).send({ err: { message: 'Email já existente.' } });
             }
 
             const user = await User.create(postData);

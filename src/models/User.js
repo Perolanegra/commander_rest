@@ -5,9 +5,14 @@ const UserSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    statusMsg: {
+    email: {
         type: String,
-        default: null
+        required: true,
+        unique: true
+    },
+    password: {
+        type: String,
+        required: true
     },
     phone: {
         type: String,
@@ -17,13 +22,9 @@ const UserSchema = new mongoose.Schema({
         type: Date,
         default: null
     },
-    email: {
+    statusMsg: {
         type: String,
-        required: true
-    },
-    password: {
-        type: String,
-        required: true
+        default: null
     },
     id_profile: { // 1 - administrador , 0 - cliente
         type: String,
