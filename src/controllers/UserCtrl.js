@@ -60,7 +60,7 @@ module.exports = {
 
     async getById(req, res) { // requisição do usuário corrente.
         try {
-            const user = await User.find({ email: req.query.email, password: req.query.password, deleted_at: null });
+            const user = await User.findOne({ email: req.query.email, password: req.query.password, deleted_at: null });
 
             return res.json(user);
             
