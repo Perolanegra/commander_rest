@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const OrderSchema = new mongoose.Schema({
-    items: { // id_produto, qtd_produto
+    items: { // id_product, qtd_product
         type: Array,
         required: true
     },

@@ -18,38 +18,33 @@ module.exports = {
 
     async getByTableId(req, res) {
         try {
-            let visit = await Visit.find({ id_table: req.query.id_table, finished_at: null });
+            // se não existir retorna nulo.
+            let visit = await Visit.findOne({ id_table: req.query.id_table, finished_at: null });
             
-            if(!visit) { // new visit
-                const { id_establishment } = await Table.find({ id_table: req.query.id_table, deleted_at: null });
+            if(visit) { // new visit
+                const {id_establishment} = await Table.findOne({ _id: req.query.id_table, deleted_at: null });
+                
                 const new_visit = {
                     id_users: [req.query.id_user],
                     id_table: req.query.id_table,
                     id_establishment: id_establishment
                 };
                 
-                visit = this.store(new_visit);
-                return res.send(false);
+                visit = await Visit.create(new_visit);
+                return res.send(visit);
             }
             // on going visit
             // update visit with the id_user that is going to be part of the table now.
             const { _id } = visit;
-            visit = await Visit.update({ _id: _id }, { $push: { id_users: req.query.id_user } });
-            return res.send(true);
+            console.log('arraysss: ', _id);
+            
+            // const ta = await Visit.update({ _id: _id }, { $push: { id_users: req.query.id_user } }).exec();
+            // console.log('ta: ', ta);
+            return res.send("OK");
             
         } catch (e) {
             return res.status(400).send({ err: { message: 'Operação Indisponível no momento.', e }});
         }
-    },
-
-    async store(params) {
-        try {
-            const visit = await Visit.create(params);
-    
-            return visit;
-            
-        } catch (e) {
-            return { err: { message: 'Operação Indisponível no momento.', e }  };
-        }
     }
+
 }

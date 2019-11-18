@@ -35,11 +35,11 @@ routes.get('/establishments', EstablishmentCtrl.getAll);
 routes.post('/establishments/store', EstablishmentCtrl.store);
 /** Fim Estabelecimento */
 
-/** Endpoints Estabelecimento */
+/** Endpoints Usuário */
 routes.get('/user', UserCtrl.getAll);
 routes.get('/user/authenticate', UserCtrl.getById);
 routes.post('/user/register', UserCtrl.store);
-/** Fim Estabelecimento */
+/** Fim Usuário */
 
 
 module.exports = routes;
