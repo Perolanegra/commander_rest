@@ -36,7 +36,8 @@ module.exports = {
             // on going visit
             // update visit with the id_user that is going to be part of the table now.
             const { _id } = visit;
-            const updatedVisit = await Visit.updateOne({ _id: _id }, { $push: { id_users: req.query.id_user } }).exec();
+            await Visit.updateOne({ _id: _id }, { $push: { id_users: req.query.id_user } }).exec();
+            const updatedVisit = await Visit.findOne({ _id: _id, deleted_at: null });
             return res.send(updatedVisit);
             
         } catch (e) {

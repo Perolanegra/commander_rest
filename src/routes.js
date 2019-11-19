@@ -14,6 +14,7 @@ const CommandCtrl = require('./controllers/CommandCtrl');
 routes.get('/products/getByEstablishmentId', ProductCtrl.getByEstablishmentId);
 routes.get('/products', ProductCtrl.getAll);
 routes.post('/products/store', ProductCtrl.store);
+routes.get('/products/getByVisitId', ProductCtrl.getByVisitId);
 /** Fim Produtos */
 
 /** Endpoints Instância Visita */

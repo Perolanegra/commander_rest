@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 
 const Product = mongoose.model('Product');
+const Command = mongoose.model('Command');
+const Order = mongoose.model('Order');
 
 module.exports = {
 
@@ -49,6 +51,38 @@ module.exports = {
             
         } catch (e) {
             return res.status(400).send({ err: { message: 'Falha ao inserir Produtos.', e }  });
+        }
+    },
+
+    async getByVisitId(req, res) { // request mudando tab da mesa
+        try {
+            const command = await Command.findOne({ id_visit: req.query.id_visit, deleted_at: null, status: "open" });
+
+            if (!command) {
+                return res.status(200).send({ success: { message: 'Comanda ainda não criada.' } });
+            }
+
+            // obtém os pedidos;
+            const { id_orders } = command;
+            const orders = await Order.find({ _id: { $in: id_orders }, deleted_at: null });
+            let resultProducts;
+
+            if (orders.length) {
+                const itemsAll = orders.map(order => order.items);
+                const items = itemsAll.map(item => item);
+                const productIds = items.map(item => item.id_product);
+                const commandProducts = await Product.find({ _id: { $in: productIds }, deleted_at: null });
+
+                resultProducts = items.map(item => {
+                    const product = commandProducts.find(obj => obj._id == item.id_product)
+                    product.qtd = item.qtd_product
+                    return product;
+                });
+                
+                console.log('log de pan: ', resultProducts);
+            }
+        } catch (e) {
+            return res.status(400).send({ err: { message: 'Não foi possível obter os produtos.', e }  });
         }
     }
 }
