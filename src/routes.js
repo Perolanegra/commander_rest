@@ -7,6 +7,7 @@ const TableCtrl = require('./controllers/TableCtrl');
 const OrderCtrl = require('./controllers/OrderCtrl');
 const EstablishmentCtrl = require('./controllers/EstablishmentCtrl');
 const UserCtrl = require('./controllers/UserCtrl');
+const CommandCtrl = require('./controllers/CommandCtrl');
 /** Endpoints **/
 
 /** Endpoints Produtos */
@@ -40,6 +41,10 @@ routes.get('/user', UserCtrl.getAll);
 routes.get('/user/authenticate', UserCtrl.getById);
 routes.post('/user/register', UserCtrl.store);
 /** Fim Usuário */
+
+/** Endpoints Commanda */
+// routes.post('/command/store', CommandCtrl.store);
+/** Fim Commanda */
 
 
 module.exports = routes;

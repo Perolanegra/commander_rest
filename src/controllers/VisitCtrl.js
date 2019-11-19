@@ -16,12 +16,12 @@ module.exports = {
         
     },
 
-    async getByTableId(req, res) {
+    async getByTableId(req, res) { // também cria a visita
         try {
             // se não existir retorna nulo.
             let visit = await Visit.findOne({ id_table: req.query.id_table, finished_at: null });
             
-            if(visit) { // new visit
+            if(!visit) { // new visit
                 const {id_establishment} = await Table.findOne({ _id: req.query.id_table, deleted_at: null });
                 
                 const new_visit = {
@@ -36,11 +36,8 @@ module.exports = {
             // on going visit
             // update visit with the id_user that is going to be part of the table now.
             const { _id } = visit;
-            console.log('arraysss: ', _id);
-            
-            // const ta = await Visit.update({ _id: _id }, { $push: { id_users: req.query.id_user } }).exec();
-            // console.log('ta: ', ta);
-            return res.send("OK");
+            const updatedVisit = await Visit.updateOne({ _id: _id }, { $push: { id_users: req.query.id_user } }).exec();
+            return res.send(updatedVisit);
             
         } catch (e) {
             return res.status(400).send({ err: { message: 'Operação Indisponível no momento.', e }});
