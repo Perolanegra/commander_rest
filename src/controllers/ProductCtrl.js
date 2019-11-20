@@ -69,18 +69,28 @@ module.exports = {
 
             if (orders.length) {
                 const itemsAll = orders.map(order => order.items);
-                const items = itemsAll.map(item => item);
-                const productIds = items.map(item => item.id_product);
+                let productIds = [];
+                let qtd_products = [];
+                
+                for (let i = 0; i < itemsAll.length; i++) {
+                    itemsAll[i].map(item => {
+                        productIds.push(item.id_product);
+                        qtd_products.push(item.qtd_product);
+                    });
+                }
+
                 const commandProducts = await Product.find({ _id: { $in: productIds }, deleted_at: null });
 
-                resultProducts = items.map(item => {
-                    const product = commandProducts.find(obj => obj._id == item.id_product)
-                    product.qtd = item.qtd_product
+                resultProducts = productIds.map((id, key) => {
+                    const product = commandProducts.find(obj => obj._id == id)
+                    product.qtd = qtd_products[key];
                     return product;
                 });
                 
-                console.log('log de pan: ', resultProducts);
+                return res.send(resultProducts);
             }
+
+            return res.send(orders);
         } catch (e) {
             return res.status(400).send({ err: { message: 'Não foi possível obter os produtos.', e }  });
         }
