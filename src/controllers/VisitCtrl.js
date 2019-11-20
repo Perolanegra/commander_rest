@@ -14,7 +14,6 @@ module.exports = {
         } catch (e) {
             return res.status(400).send({ err: { message: 'Operação Indisponível no momento.', e }  });
         }
-        
     },
 
     async getByTableId(req, res) { // também cria a visita
@@ -55,10 +54,10 @@ module.exports = {
             }
 
             const { _id } = visit;
-            await Visit.updateOne({ _id: _id }, { finished_at: Date.now }).exec();
+            await Visit.updateOne({ _id: _id }, { finished_at: Date.now() }).exec();
             await Command.updateOne({ id_visit: _id }, { status: "paid" }).exec();
 
-            return res.status(200).send({ success: { message: 'Visita Finalizada.', e }  });
+            return res.status(200).send({ success: { message: 'Visita Finalizada.' }  });
 
         } catch (e) {
             return res.status(400).send({ err: { message: 'Operação Indisponível no momento.', e }});
