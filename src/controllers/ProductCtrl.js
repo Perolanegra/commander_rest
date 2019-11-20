@@ -95,4 +95,5 @@ module.exports = {
             return res.status(400).send({ err: { message: 'Não foi possível obter os produtos.', e }  });
         }
     }
+
 }
