@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 
 const Visit = mongoose.model('Visit');
 const Table = mongoose.model('Table');
+const Command = mongoose.model('Command');
 
 module.exports = {
     async getByUserId(req, res) {
@@ -40,6 +41,25 @@ module.exports = {
             const updatedVisit = await Visit.findOne({ _id: _id, deleted_at: null });
             return res.send(updatedVisit);
             
+        } catch (e) {
+            return res.status(400).send({ err: { message: 'Operação Indisponível no momento.', e }});
+        }
+    },
+
+    async closeByIdTable(req, res) { // também finaliza a comanda.
+        try {
+            let visit = await Visit.findOne({ id_table: req.body.id_table, finished_at: null });
+
+            if(!visit) {
+                return res.status(200).send({ success: { message: 'Não existe visita em aberto para ser fechada.', e }  });
+            }
+
+            const { _id } = visit;
+            await Visit.updateOne({ _id: _id }, { finished_at: Date.now }).exec();
+            await Command.updateOne({ id_visit: _id }, { status: "paid" }).exec();
+
+            return res.status(200).send({ success: { message: 'Visita Finalizada.', e }  });
+
         } catch (e) {
             return res.status(400).send({ err: { message: 'Operação Indisponível no momento.', e }});
         }

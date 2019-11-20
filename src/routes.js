@@ -20,6 +20,7 @@ routes.get('/products/getByVisitId', ProductCtrl.getByVisitId);
 /** Endpoints Instância Visita */
 routes.get('/visit/getByUserId', VisitCtrl.getByUserId);
 routes.get('/visit/getByTableId', VisitCtrl.getByTableId);
+routes.post('/visit/close', VisitCtrl.closeByIdTable);
 /** Fim Instância Visita */
 
 /** Endpoints Mesa */
@@ -44,7 +45,7 @@ routes.post('/user/register', UserCtrl.store);
 /** Fim Usuário */
 
 /** Endpoints Commanda */
-// routes.post('/command/store', CommandCtrl.store);
+routes.get('/command/getByVisitId', CommandCtrl.getByVisitId);
 /** Fim Commanda */
 
 
