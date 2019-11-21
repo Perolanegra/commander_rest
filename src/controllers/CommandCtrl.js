@@ -32,12 +32,13 @@ module.exports = {
                 const visitsId = visits.map(v => v._id);
                 const establishmentsId = visits.map(v => v.id_establishment);
 
-                const commands = await Command.find({ id_visit: { $in: visitsId }, deleted_at: null, status: "paid" });
+                const command = await Command.findOne({ id_visit: { $in: visitsId }, deleted_at: null, status: "paid" });
                 let establishments = await Establishment.find({ _id: { $in: establishmentsId }, deleted_at: null });
 
-                if(commands.length) {
-                    const ordersId = commands.map(c => c.id_orders);
-                    const orders = await Order.find({ _id: { $in: ordersId }, deleted_at: null });
+                if(command) {
+                    const { id_orders } = command;
+                    
+                    const orders = await Order.find({ _id: { $in: id_orders }, deleted_at: null });
     
                     if (orders.length) {
                         const itemsAll = orders.map(order => order.items);
