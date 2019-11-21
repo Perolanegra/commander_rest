@@ -46,6 +46,7 @@ routes.post('/user/register', UserCtrl.store);
 
 /** Endpoints Commanda */
 routes.get('/command/getClosedByUserId', CommandCtrl.getClosedByUserId);
+routes.get('/command/getByVisitId', CommandCtrl.getByVisitId);
 /** Fim Commanda */
 
 
