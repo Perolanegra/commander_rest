@@ -69,7 +69,7 @@ module.exports = {
                     }
                 }
             }
-
+            
             return res.send(commandClosed);
         } catch (e) {
             return res.status(400).send({ err: { message: 'Não foi possível obter as comandas.', e }  });
