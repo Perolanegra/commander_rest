@@ -67,15 +67,16 @@ module.exports = {
                                 return respAux;
                             });
 
-                            return commandClosed; // isso ta certo, so tem q fazer retornar agora
+                            return commandClosed;
                         }
                     });
 
-                    return res.send(commander);
+                    const results =  await Promise.all(commander);
+                    return res.send(results);
                 }
             }
             
-            return res.send(commander);
+            return res.send([]);
         } catch (e) {
             return res.status(400).send({ err: { message: 'Não foi possível obter as comandas.', e }  });
         }
