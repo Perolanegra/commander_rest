@@ -23,7 +23,7 @@ module.exports = {
 
     async getClosedByUserId(req, res) {
         try {
-            let resultCommand = [];
+            let resultProducts = [];
             let commandClosed;
             let commander = [];
             let respAux = { commandProducts: null, establishment: null };
@@ -38,7 +38,6 @@ module.exports = {
                 
                 if(commands.length) {
                     commander = commands.map(async (c) => {
-
                         const orders = await Order.find({ _id: { $in: c.id_orders }, deleted_at: null });
         
                         if (orders.length) {
@@ -57,13 +56,13 @@ module.exports = {
         
                             commandClosed = establishments.map((item, key) => {
                                 respAux.establishment = item;
-                                resultCommand = productIds.map((id, key) => {
+                                resultProducts = productIds.map((id, key) => {
                                     const product = commandProducts.find(obj => obj._id == id && obj.id_establishment == item._id);
                                     product.qtd = qtd_products[key];
                                     return product;
                                 });
     
-                                respAux.commandProducts = resultCommand;
+                                respAux.commandProducts = resultProducts;
                                 return respAux;
                             });
 
