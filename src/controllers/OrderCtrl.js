@@ -16,7 +16,8 @@ module.exports = {
             if (!command) { // se não existir comanda aberta com aquela visita, entra e cria uma nova.
                 const new_command = {
                     id_orders: [order._id],
-                    id_visit: postData.id_visit
+                    id_visit: postData.id_visit,
+                    id_establishment: postData.id_establishment
                 };
 
                 command = await Command.create(new_command);

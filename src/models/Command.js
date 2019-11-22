@@ -10,6 +10,11 @@ const CommandSchema = new mongoose.Schema({
         required: true,
         unique: true
     },
+    id_establishment: {
+        type: String,
+        required: true,
+        unique: true
+    },
     status: {
         type: String,
         enum: ["paid", "open"],

@@ -23,23 +23,25 @@ module.exports = {
 
     async getClosedByUserId(req, res) {
         try {
-            let resultProducts = [];
+            let commandProducts = [];
             let commandClosed;
-            let commander = [];
             let respAux = { commandProducts: null, establishment: null };
             const visits = await Visit.find({ id_users: { $in: [req.query.id_user] }, deleted_at: null, finished_at: { $exists: true , $ne: null } });
 
             if(visits.length) {
-                const visitsId = visits.map(v => v._id);
+                // const visitsId = visits.map(v => v._id);
                 const establishmentsId = visits.map(v => v.id_establishment);
-
-                const commands = await Command.find({ id_visit: { $in: visitsId }, deleted_at: null, status: "paid" });
                 let establishments = await Establishment.find({ _id: { $in: establishmentsId }, deleted_at: null });
                 
+                commandClosed = establishments.map(async (item, key) => {
+                    const command = await Command.findOne({ id_establishment: item._id, deleted_at: null, status: "paid" });
 
-                if(commands.length) {
-                    commander = commands.map(async (c) => {
-                        const orders = await Order.find({ _id: { $in: c.id_orders }, deleted_at: null });
+                    if(command) {
+                        respAux.establishment = item;
+                        
+                        
+                        const { id_orders } = command;
+                        const orders = await Order.find({ _id: { $in: id_orders }, deleted_at: null });
                         
                         let productIds = [];
                         let qtd_products = [];
@@ -47,35 +49,31 @@ module.exports = {
                         if (orders.length) {
                             const itemsAll = orders.map(order => order.items);
                             
-                            itemsAll.forEach(itemAll => { // tem q ver em casa dps 
+                            itemsAll.forEach(itemAll => { 
                                 itemAll.map(item => {
                                     productIds.push(item.id_product);
                                     qtd_products.push(item.qtd_product);
                                 });
                             });
                             
-                            const commandProducts = await Product.find({ _id: { $in: productIds }, deleted_at: null });
-                            // console.log('qual foi: ', itemsAll);
-                            
-                            commandClosed = establishments.map((item, key) => {
-                                respAux.establishment = item;
-                                resultProducts = productIds.map((id, key) => {
-                                    const product = commandProducts.find(obj => obj._id == id && obj.id_establishment == item._id);
-                                    product.qtd = qtd_products[key];
-                                    return product;
-                                });
-    
-                                respAux.commandProducts = resultProducts;
-                                return respAux;
-                            });
+                            const products = await Product.find({ _id: { $in: productIds }, deleted_at: null });
 
-                            return commandClosed;
+                            commandProducts = productIds.map((id, key) => {
+                                const product = products.find(obj => obj._id == id && obj.id_establishment == item._id);
+                                product.qtd = qtd_products[key];
+                                return product;
+                            });
+                            
                         }
-                    });
+                        
+                        respAux.commandProducts = await Promise.all(commandProducts);
+                    }
                     
-                    const results =  await Promise.all(commander);
-                    return res.send(results);
-                }
+                    return respAux;
+                });
+
+                const commander = await Promise.all(commandClosed);
+                return res.send(commander);
             }
             
             return res.send([]);
