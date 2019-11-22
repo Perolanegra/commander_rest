@@ -36,24 +36,27 @@ module.exports = {
                 const commands = await Command.find({ id_visit: { $in: visitsId }, deleted_at: null, status: "paid" });
                 let establishments = await Establishment.find({ _id: { $in: establishmentsId }, deleted_at: null });
                 
+
                 if(commands.length) {
                     commander = commands.map(async (c) => {
                         const orders = await Order.find({ _id: { $in: c.id_orders }, deleted_at: null });
-        
+                        
+                        let productIds = [];
+                        let qtd_products = [];
+
                         if (orders.length) {
                             const itemsAll = orders.map(order => order.items);
-                            let productIds = [];
-                            let qtd_products = [];
-        
-                            for (let i = 0; i < itemsAll.length; i++) {
-                                itemsAll[i].map(item => {
+                            
+                            itemsAll.forEach(itemAll => { // tem q ver em casa dps 
+                                itemAll.map(item => {
                                     productIds.push(item.id_product);
                                     qtd_products.push(item.qtd_product);
                                 });
-                            }
-    
+                            });
+                            
                             const commandProducts = await Product.find({ _id: { $in: productIds }, deleted_at: null });
-        
+                            // console.log('qual foi: ', itemsAll);
+                            
                             commandClosed = establishments.map((item, key) => {
                                 respAux.establishment = item;
                                 resultProducts = productIds.map((id, key) => {
@@ -69,7 +72,7 @@ module.exports = {
                             return commandClosed;
                         }
                     });
-
+                    
                     const results =  await Promise.all(commander);
                     return res.send(results);
                 }
