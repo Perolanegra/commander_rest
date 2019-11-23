@@ -22,7 +22,6 @@ module.exports = {
                     id_establishment: postData.id_establishment
                 };
                 
-                console.log('params2: ', new_command);
                 command = await Command.create(new_command);
                 
                 const { id_orders } = command;

@@ -24,15 +24,14 @@ module.exports = {
     async getClosedByUserId(req, res) {
         try {
             let commandsClosedPromise;
-            let respAux = { commandProducts: [], establishment: null, command: null };
             const visits = await Visit.find({ id_users: { $in: [req.query.id_user] }, deleted_at: null, finished_at: { $exists: true , $ne: null } });
 
             if(visits.length) {
 
                 commandsClosedPromise = visits.map(async (visit) => {
-                    
+                    let respAux = { commandProducts: [], establishment: null, command: null };
                     const command = await Command.findOne({ id_visit: visit._id, deleted_at: null, status: "paid" });
-                   
+                    
                     if(command) {
                         respAux.command = command;
                         const { id_orders, id_establishment } = command;
@@ -57,7 +56,8 @@ module.exports = {
                             return productOrder;
                         });
 
-                        await Promise.all(orderPromise);
+                        const teste = await Promise.all(orderPromise);
+                        
                         return respAux;
                     }
                 });
