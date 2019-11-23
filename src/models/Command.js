@@ -13,7 +13,6 @@ const CommandSchema = new mongoose.Schema({
     id_establishment: {
         type: String,
         required: true,
-        unique: true
     },
     status: {
         type: String,

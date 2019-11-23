@@ -8,10 +8,12 @@ module.exports = {
 
     async store(req, res) { // requisição do addTotable. POG desgraçado, mas dps ajeito, foi correria felipe.
         const postData = req.body;
+        let command;
 
         try {
             const order = await Order.create(postData);
-            let command = await Command.findOne({ id_visit: postData.id_visit, deleted_at: null, status: "open" });
+            command = await Command.findOne({ id_visit: postData.id_visit, deleted_at: null, status: "open" });
+            
             // 
             if (!command) { // se não existir comanda aberta com aquela visita, entra e cria uma nova.
                 const new_command = {
@@ -19,8 +21,10 @@ module.exports = {
                     id_visit: postData.id_visit,
                     id_establishment: postData.id_establishment
                 };
-
+                
+                console.log('params2: ', new_command);
                 command = await Command.create(new_command);
+                
                 const { id_orders } = command;
                 const orders = await Order.find({ _id: { $in: id_orders }, deleted_at: null });
                 let resultProducts;
