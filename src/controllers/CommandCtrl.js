@@ -23,57 +23,47 @@ module.exports = {
 
     async getClosedByUserId(req, res) {
         try {
-            let commandProducts = [];
-            let commandClosed;
-            let respAux = { commandProducts: null, establishment: null };
+            let commandsClosedPromise;
+            let respAux = { commandProducts: [], establishment: null, command: null };
             const visits = await Visit.find({ id_users: { $in: [req.query.id_user] }, deleted_at: null, finished_at: { $exists: true , $ne: null } });
 
             if(visits.length) {
-                // const visitsId = visits.map(v => v._id);
-                const establishmentsId = visits.map(v => v.id_establishment);
-                let establishments = await Establishment.find({ _id: { $in: establishmentsId }, deleted_at: null });
-                
-                commandClosed = establishments.map(async (item, key) => {
-                    const command = await Command.findOne({ id_establishment: item._id, deleted_at: null, status: "paid" });
 
+                commandsClosedPromise = visits.map(async (visit) => {
+                    
+                    const command = await Command.findOne({ id_visit: visit._id, deleted_at: null, status: "paid" });
+                   
                     if(command) {
-                        respAux.establishment = item;
-                        
-                        
-                        const { id_orders } = command;
+                        respAux.command = command;
+                        const { id_orders, id_establishment } = command;
+
+                        const establishment = await Establishment.findOne({ _id: id_establishment, deleted_at: null });
+                        respAux.establishment = establishment;
+    
                         const orders = await Order.find({ _id: { $in: id_orders }, deleted_at: null });
-                        
-                        let productIds = [];
-                        let qtd_products = [];
+    
+                        const orderPromise = orders.map(async (order) => {
+    
+                            const { items } = order; // isso aqui é um array
 
-                        if (orders.length) {
-                            const itemsAll = orders.map(order => order.items);
-                            
-                            itemsAll.forEach(itemAll => { 
-                                itemAll.map(item => {
-                                    productIds.push(item.id_product);
-                                    qtd_products.push(item.qtd_product);
-                                });
-                            });
-                            
-                            const products = await Product.find({ _id: { $in: productIds }, deleted_at: null });
-
-                            commandProducts = productIds.map((id, key) => {
-                                const product = products.find(obj => obj._id == id && obj.id_establishment == item._id);
-                                product.qtd = qtd_products[key];
+                            const productOrderPromise = items.map(async (item) => { // retorna uma Promise de produtos. => array
+                                const product = await Product.findOne({ _id: item.id_product, deleted_at: null });
+                                product.qtd = item.qtd_product;
+                                respAux.commandProducts.push(product);
                                 return product;
                             });
                             
-                        }
-                        
-                        respAux.commandProducts = await Promise.all(commandProducts);
+                            const productOrder = await Promise.all(productOrderPromise);
+                            return productOrder;
+                        });
+
+                        await Promise.all(orderPromise);
+                        return respAux;
                     }
-                    
-                    return respAux;
                 });
 
-                const commander = await Promise.all(commandClosed);
-                return res.send(commander);
+                const commandsClosed = await Promise.all(commandsClosedPromise);
+                return res.send(commandsClosed);
             }
             
             return res.send([]);
