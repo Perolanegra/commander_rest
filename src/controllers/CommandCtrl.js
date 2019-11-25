@@ -24,6 +24,7 @@ module.exports = {
     async getClosedByUserId(req, res) {
         try {
             let commandsClosedPromise;
+            let arrayEstabs = new Array();
             const visits = await Visit.find({ id_users: { $in: [req.query.id_user] }, deleted_at: null, finished_at: { $exists: true , $ne: null } });
 
             if(visits.length) {
@@ -38,6 +39,7 @@ module.exports = {
 
                         const establishment = await Establishment.findOne({ _id: id_establishment, deleted_at: null });
                         respAux.establishment = establishment;
+                        arrayEstabs.push(establishment);
     
                         const orders = await Order.find({ _id: { $in: id_orders }, deleted_at: null });
     
@@ -56,14 +58,32 @@ module.exports = {
                             return productOrder;
                         });
 
-                        const teste = await Promise.all(orderPromise);
-                        
+                        await Promise.all(orderPromise);                        
                         return respAux;
                     }
                 });
 
-                const commandsClosed = await Promise.all(commandsClosedPromise);
-                return res.send(commandsClosed);
+                let commandsClosed = await Promise.all(commandsClosedPromise);
+
+                const jsonObject = arrayEstabs.map(JSON.stringify); 
+                const uniqueSet = new Set(jsonObject); 
+                let arrayVisit = Array.from(uniqueSet).map(JSON.parse); 
+                
+                arrayVisit.forEach((estab) => {
+                    const arrayCommand = new Array();
+                    const arrayCommandProds = new Array();
+                    commandsClosed.forEach(async (command) => {
+                        if(estab.lat == command.establishment.lat) {
+                            arrayCommand.push(command.command);
+                            arrayCommandProds.push(command.commandProducts);
+                        }
+                    });
+                    
+                    estab.commands = arrayCommand;
+                    estab.commandProducts = arrayCommandProds;
+                });
+
+                return res.send(arrayVisit);
             }
             
             return res.send([]);

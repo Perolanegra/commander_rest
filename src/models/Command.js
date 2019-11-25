@@ -14,6 +14,10 @@ const CommandSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    // id_host: { // quem iniciou a comanda.
+    //     type: String, 
+    //     required: true
+    // },
     status: {
         type: String,
         enum: ["paid", "open"],
