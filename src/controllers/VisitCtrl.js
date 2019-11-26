@@ -53,7 +53,7 @@ module.exports = {
                 return res.status(200).send({ success: { message: 'Não existe visita em aberto para ser fechada.', e }  });
             }
 
-            const { _id } = visit;
+            let { _id } = visit;
             await Visit.updateOne({ _id: _id }, { finished_at: Date.now() }).exec();
 
             const command = await Command.findOne({ id_visit: _id, status: "open", deleted_at: null });
