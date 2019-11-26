@@ -64,24 +64,27 @@ module.exports = {
                 });
 
                 let commandsClosed = await Promise.all(commandsClosedPromise);
+                let arrayVisit;
+                if(commandsClosed) {
 
-                const jsonObject = arrayEstabs.map(JSON.stringify); 
-                const uniqueSet = new Set(jsonObject); 
-                let arrayVisit = Array.from(uniqueSet).map(JSON.parse); 
-                
-                arrayVisit.forEach((estab) => {
-                    const arrayCommand = new Array();
-                    const arrayCommandProds = new Array();
-                    commandsClosed.forEach(async (command) => {
-                        if(estab.lat == command.establishment.lat) {
-                            arrayCommand.push(command.command);
-                            arrayCommandProds.push(command.commandProducts);
-                        }
-                    });
+                    const jsonObject = arrayEstabs.map(JSON.stringify); 
+                    const uniqueSet = new Set(jsonObject); 
+                    arrayVisit = Array.from(uniqueSet).map(JSON.parse); 
                     
-                    estab.commands = arrayCommand;
-                    estab.commandProducts = arrayCommandProds;
-                });
+                    arrayVisit.forEach((estab) => {
+                        const arrayCommand = new Array();
+                        const arrayCommandProds = new Array();
+                        commandsClosed.forEach(async (command) => {
+                            if(estab.lat == command.establishment.lat) {
+                                arrayCommand.push(command.command);
+                                arrayCommandProds.push(command.commandProducts);
+                            }
+                        });
+                        
+                        estab.commands = arrayCommand;
+                        estab.commandProducts = arrayCommandProds;
+                    });
+                }
 
                 return res.send(arrayVisit);
             }
