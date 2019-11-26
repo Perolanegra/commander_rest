@@ -6,27 +6,17 @@ module.exports = {
 
     async store(req, res) {
         const postData = req.body;
-        let hasData;
-        let email = null;
         
         try {
 
-            await User.find(postData, (e, resp) => {
-                if(e) {
-                    return res.status(400).send({ err: { message: 'Operação Indisponível no momento.', e } });
-                }
-                
-                hasData = resp.length ? true : false;
-                email = resp.email;
-            });
+            const userFind = await User.findOne({ email: postData.email });
     
-            if(hasData) {
-                return res.status(409).send({ err: { message: 'Usuário já existente.' } });
+            if(userFind) {
+                return res.status(409).send({ err: { message: 'Email já cadastrado.' } });
             }
-            else if(email) {
-                return res.status(409).send({ err: { message: 'Email já existente.' } });
-            }
-
+           
+            
+            postData.birthDate = new Date(postData.birthDate);
             const user = await User.create(postData);
     
             return res.send(user);
