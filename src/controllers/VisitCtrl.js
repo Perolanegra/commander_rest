@@ -55,13 +55,18 @@ module.exports = {
 
             const { _id } = visit;
             await Visit.updateOne({ _id: _id }, { finished_at: Date.now() }).exec();
-            await Command.updateOne({ id_visit: _id }, { status: "paid" }).exec();
+
+            const command = await Command.findOne({ id_visit: _id, status: "open", deleted_at: null });
+
+            if(command) {
+                await Command.updateOne({ id_visit: _id }, { status: "paid" }).exec();
+            }
 
             return res.status(200).send({ success: { message: 'Visita Finalizada.' }  });
 
         } catch (e) {
             return res.status(400).send({ err: { message: 'Operação Indisponível no momento.', e }});
         }
-    }
+    },
 
 }
